@@ -1,0 +1,79 @@
+const bcrypt = require("bcrypt");
+const userModel = require("../models/user-model");
+const jwt = require("jsonwebtoken");
+const { generateToken } = require("../utils/generateToken");
+
+//------------------------------- USER REGISTER -------------------------->
+module.exports.userRegister = async (req, res) => {
+    try {
+        let { fullname, email, password } = req.body
+        let user = await userModel.findOne({ email: email });
+        if (user) {
+            return res.status(409).json({
+                success: false,
+                message: "User already exists"
+            })
+        } else {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            let userCreated = await userModel.create({
+                fullname,
+                email,
+                password: hashedPassword
+            })
+            let token = generateToken(userCreated);
+            res.cookie("token", token);
+            const userData = userCreated.toObject();
+            delete userData.password;
+            userData.token = token;
+            return res.status(201).json({
+                success: true,
+                message: "Account created successfully",
+                userData,
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+//------------------------------- USER LOGIN -------------------------->
+module.exports.userLogin = async (req, res) => {
+    try {
+        let { email, password } = req.body
+        let user = await userModel.findOne({ email: email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not exists"
+            })
+        } else {
+            const verifyPassword = await bcrypt.compare(password, user.password);
+            if (verifyPassword) {
+                let token = generateToken(user);
+                res.cookie("token", token);
+                const userData = user.toObject();
+                delete userData.password;
+                userData.token = token;
+                return res.status(200).json({
+                    success: true,
+                    message: "Login successfully",
+                    userData
+                })
+            } else {
+                return res.status(401).json({
+                    success: false,
+                    message: "Email or password is incorrect!"
+                })
+            }
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
