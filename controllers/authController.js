@@ -3,7 +3,7 @@ const userModel = require("../models/user-model");
 const jwt = require("jsonwebtoken");
 const { generateToken } = require("../utils/generateToken");
 
-//------------------------------- USER REGISTER -------------------------->
+//------------------------------ USER REGISTER ----------------------->
 module.exports.userRegister = async (req, res) => {
     try {
         let { fullname, email, password } = req.body
@@ -39,11 +39,10 @@ module.exports.userRegister = async (req, res) => {
     }
 }
 
-
-//------------------------------- USER LOGIN -------------------------->
+//------------------------------ USER LOGIN -------------------------->
 module.exports.userLogin = async (req, res) => {
     try {
-        let { email, password } = req.body
+        let { email, password } = req.body;
         let user = await userModel.findOne({ email: email });
         if (!user) {
             return res.status(404).json({
@@ -77,3 +76,19 @@ module.exports.userLogin = async (req, res) => {
         })
     }
 }
+
+//----------------------------- USER LOGOUT --------------------------->
+module.exports.userLogout = async (req, res) => {
+    try {
+        res.clearCookie("token");
+        return res.status(200).json({
+            success: true,
+            message: "User logged out successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
