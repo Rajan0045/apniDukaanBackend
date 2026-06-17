@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema({
         default: []
     },
     contact: Number,
-    picture: String
+    image: Buffer
 });
 
 module.exports = mongoose.model("user", userSchema)

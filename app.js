@@ -8,11 +8,12 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const db = require("./config/mongoose-connection");
 const env = require("dotenv").config();
+const connectDB = require("./config/mongoose-connection");
 const flash = require("connect-flash");
 const expressSession = require("express-session");
 
+connectDB();
 app.use(expressSession({
     resave: false,
     saveUninitialized: false,
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: "*",
         credentials: true,
     })
 );
