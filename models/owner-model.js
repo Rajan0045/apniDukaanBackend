@@ -5,7 +5,8 @@ const ownerSchema = mongoose.Schema({
     email: String,
     password: String,
     contact: Number,
-    picture: String,
+    contact: Number,
+    image: Buffer,
     gstin: String,
     isOwner: {
         type: Boolean,
