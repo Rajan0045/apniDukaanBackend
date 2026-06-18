@@ -6,7 +6,11 @@ const ownerSchema = mongoose.Schema({
     password: String,
     contact: Number,
     picture: String,
-    gstin: String
+    gstin: String,
+    isOwner: {
+        type: Boolean,
+        default: true
+    }
 });
 
 module.exports = mongoose.model("owner", ownerSchema)

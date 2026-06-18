@@ -16,7 +16,7 @@ router.post("/create", async (req, res) => {
             let owner = await ownerModel.create({
                 fullName,
                 email,
-                password,
+                password
             })
             return res.status(200).json({
                 success: true,
