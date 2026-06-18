@@ -37,13 +37,11 @@ app.use(
 
 //------------------ routers ------------------------------->
 const usersRouter = require("./routes/usersRouter");
-const ownersRouter = require("./routes/ownersRouter");
 const productsRouter = require("./routes/productsRouter");
 const cartRouter = require("./routes/cartRouter");
 const isLoggedIn = require("./middlewares/isLoggedIn");
 
 app.use("/users", usersRouter);
-app.use("/owners", ownersRouter);
 app.use("/products", isLoggedIn, productsRouter);
 app.use("/cart", isLoggedIn, cartRouter);
 
