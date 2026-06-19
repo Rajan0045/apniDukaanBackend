@@ -39,11 +39,13 @@ app.use(
 const usersRouter = require("./routes/usersRouter");
 const productsRouter = require("./routes/productsRouter");
 const cartRouter = require("./routes/cartRouter");
+const orderRouter = require("./routes/orderRouter");
 const isLoggedIn = require("./middlewares/isLoggedIn");
 
 app.use("/users", usersRouter);
 app.use("/products", isLoggedIn, productsRouter);
 app.use("/cart", isLoggedIn, cartRouter);
+app.use("/order", isLoggedIn, orderRouter);
 
 
 app.listen(3000, () => { console.log("server running....") })

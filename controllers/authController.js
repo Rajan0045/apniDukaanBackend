@@ -143,7 +143,7 @@ module.exports.getProfile = async (req, res) => {
 
 module.exports.updateProfile = async (req, res) => {
     try {
-        const { fullname, email, contact } = req.body;
+        const { fullname,address, email, contact } = req.body;
         const user = await userModel.findById(req.user.id);
         if (!user) {
             return res.status(404).json({
@@ -154,6 +154,7 @@ module.exports.updateProfile = async (req, res) => {
         user.fullname = fullname;
         user.email = email;
         user.contact = contact;
+        user.address = address
         if (req.file) {
             user.image = req.file.buffer;
         }

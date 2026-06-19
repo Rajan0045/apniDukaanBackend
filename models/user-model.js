@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
         default: []
     },
     contact: Number,
+    address: String,
     image: Buffer,
     role: {
         type: String,
