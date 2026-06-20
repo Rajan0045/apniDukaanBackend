@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const isOwner = require("../middlewares/isOwner");
-const { orderPlace, getMyOrders, orderDetails, getAllOrders } = require("../controllers/orderController");
+const { orderPlace, getMyOrders, orderDetails, getAllOrders, updateOrderStatus } = require("../controllers/orderController");
 
 router.post("/order-place", orderPlace);
 router.get("/list", getMyOrders);
-router.get("/all-orders", isOwner , getAllOrders);
+router.get("/all-orders", isOwner, getAllOrders);
 router.get("/:_id", orderDetails);
+router.put("/update-status/:orderId", isOwner, updateOrderStatus);
 
 module.exports = router;
