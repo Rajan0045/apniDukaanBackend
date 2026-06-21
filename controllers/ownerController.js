@@ -94,3 +94,59 @@ module.exports.productDetails = async (req, res) => {
         });
     }
 };
+
+// ------------------------- PRODUCT UPDATE ----------------------->
+module.exports.updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, price, discount } = req.body;
+        const product = await productModel.findById(id);
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        product.title = title ?? product.title;
+        product.description = description ?? product.description;
+        product.price = price ?? product.price;
+        product.discount = discount ?? product.discount;
+        if (req.file) {
+            product.image = req.file.buffer;
+        }
+        await product.save();
+        return res.status(200).json({
+            success: true,
+            message: "Product updated successfully",
+            product
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// ------------------------- PRODUCT DELETE ----------------------->
+module.exports.deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await productModel.findByIdAndDelete(id);
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Product deleted successfully",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
